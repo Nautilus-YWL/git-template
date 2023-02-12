@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+export HOOK_NAME=post-merge
+export GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
+export CURRENT_BRANCH=$(git branch --show-current) # git 2.22+
+# export CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+source $GIT_COMMON_DIR/hooks/base.sh
+
+for plugin in $(find $GIT_COMMON_DIR/hooks -type d -exec basename {} \;); do
+    if [ -f "$GIT_COMMON_DIR/hooks/$plugin/$HOOK_NAME" ]; then
+        "$GIT_COMMON_DIR/hooks/$plugin/$HOOK_NAME"
+    fi
+done
+
+find-program git-lfs
+git lfs post-merge "$@"

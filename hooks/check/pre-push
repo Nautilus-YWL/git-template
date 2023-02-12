@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+protected_branch='master'
+if [ "$CURRENT_BRANCH" = "$protected_branch" ]; then
+    echo >&2 "Never push code directly to the "$protected_branch" branch!"
+    exit 1
+fi
