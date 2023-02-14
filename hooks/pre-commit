@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 export HOOK_NAME=pre-commit
-export GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
-export CURRENT_BRANCH=$(git branch --show-current) # git 2.22+
-# export CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-source $GIT_COMMON_DIR/hooks/base.sh
+source $(git rev-parse --git-common-dir)/hooks/common.sh
 
-for plugin in $(find $GIT_COMMON_DIR/hooks -type d -exec basename {} \;); do
-    if [ -f "$GIT_COMMON_DIR/hooks/$plugin/$HOOK_NAME" ]; then
-        "$GIT_COMMON_DIR/hooks/$plugin/$HOOK_NAME"
-        status=$?
-        if [ $status -ne 0 ]; then
-            echo "ERROR in $plugin"
-            exit $status
-        fi
+# if [[ $CURRENT_BRANCH =~ $PROTECTED_BRANCH ]]; then
+#   echo >&2 "You can't commit directly to protected branch ($CURRENT_BRANCH)!"
+#   exit 1
+# fi
+
+find-program clang-format
+find-program perl
+
+commands=(encoding.pl format.sh)
+for subcommand in ${commands[@]}; do
+    "$GIT_COMMON_DIR/hooks/check/$subcommand"
+    status=$?
+    if [ $status -ne 0 ]; then
+        exit $status
     fi
 done
