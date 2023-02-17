@@ -2,5 +2,7 @@
 export HOOK_NAME=post-checkout
 source $(git rev-parse --git-common-dir)/hooks/common.sh
 
+"$GIT_COMMON_DIR/hooks/editor/emacs-post-checkout.sh"
+
 find-program git-lfs
 git lfs post-checkout "$@"

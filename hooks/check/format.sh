@@ -8,7 +8,7 @@ for ctx in `git diff --cached --name-only --diff-filter=ACM |git check-attr --st
     fi
     case "${file##*.}" in
         c|h|cc|hh|cxx|hxx|cpp|hpp|c\+\+|h\+\+|tcc)
-            clang-format -i "$file"
+            clang-format --Wno-error=unknown -i "$file"
             ;;
         *)
             sed -i -e :a -e '/^\n*$/{$d;N;};/\n$/ba' -e 's/[[:space:]]*$//' "$file"

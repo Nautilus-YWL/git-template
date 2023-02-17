@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+export GIT_TOPLEVEL_DIR=$(git rev-parse --show-toplevel)
 export GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
 export CURRENT_BRANCH=$(git branch --show-current) # git 2.22+
 # export CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
