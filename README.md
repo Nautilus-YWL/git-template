@@ -2,7 +2,7 @@
 
 git template is a collection of hook scripts.
 
-## Use
+## Usage
 
  + for clone: clone this repo and apply for your repo
 ```shell
