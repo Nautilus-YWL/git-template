@@ -12,7 +12,7 @@ git clone git@github.com:Your/Repo.git --template=/path/to/gittemplate
  + for init local repo
 ```shell
 mkdir -p /path/to/your-repo
-git -C /path/to/your-repo --template=/path/to/gittemplate
+git -C /path/to/your-repo init --template=/path/to/gittemplate
 ```
 
  + update hooks
