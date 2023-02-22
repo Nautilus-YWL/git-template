@@ -5,10 +5,14 @@ push_command=$(ps -ocommand= -p $PPID)
 
 export REMOTE_REF=$1
 if [[ "$push_command" =~ ":" ]]; then
+  LOCAL_BRANCH=${push_command%:*}
+  export LOCAL_BRANCH=${LOCAL_BRANCH##* }
   REMOTE_BRANCH=${push_command##*:}
   export REMOTE_BRANCH=${REMOTE_BRANCH%% *}
 else
-  export REMOTE_BRANCH=$CURRENT_BRANCH
+  LOCAL_BRANCH=$(git rev-parse --abbrev-ref @{push})
+  export LOCAL_BRANCH=${LOCAL_BRANCH#*/}
+  export REMOTE_BRANCH=$LOCAL_BRANCH
 fi
 
 if [[ $REMOTE_BRANCH =~ $PROTECTED_BRANCH ]]; then
