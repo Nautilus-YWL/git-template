@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
 export HOOK_NAME=pre-push
 source $(git rev-parse --git-common-dir)/hooks/common.sh
+push_command=$(ps -ocommand= -p $PPID)
 
-if [[ $CURRENT_BRANCH =~ $PROTECTED_BRANCH ]]; then
-    echo >&2 "Never push code directly to the protected branch ($CURRENT_BRANCH)!"
+export REMOTE_REF=$1
+if [[ "$push_command" =~ ":" ]]; then
+  REMOTE_BRANCH=${push_command##*:}
+  export REMOTE_BRANCH=${REMOTE_BRANCH%% *}
+else
+  export REMOTE_BRANCH=$CURRENT_BRANCH
+fi
+
+if [[ $REMOTE_BRANCH =~ $PROTECTED_BRANCH ]]; then
+    echo >&2 "Never push code directly to the protected branch ($REMOTE_BRANCH)!"
     exit 1
 fi
 
-push_command=$(ps -ocommand= -p $PPID)
 if [[ $push_command =~ $FORCE_PUSH_CMD ]]; then
     echo "Think before you type."
     $(prompt-to-confirm)

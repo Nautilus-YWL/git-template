@@ -4,7 +4,7 @@ export GIT_TOPLEVEL_DIR=$(git rev-parse --show-toplevel)
 export GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
 export CURRENT_BRANCH=$(git branch --show-current) # git 2.22+
 # export CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-export PROTECTED_BRANCH='^(master|dev|release-*|patch-*)'
+export PROTECTED_BRANCH='^(master|dev|release-[0-9A-Za-z._-]+|patch-[0-9A-Za-z._-]+)$'
 export FORCE_PUSH_CMD='force|delete|-f'
 
 test -d "$GIT_COMMON_DIR"/rebase-merge -o -d "$GIT_COMMON_DIR"/rebase-apply && exit 0

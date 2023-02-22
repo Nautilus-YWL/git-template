@@ -2,10 +2,15 @@
 export HOOK_NAME=pre-commit
 source $(git rev-parse --git-common-dir)/hooks/common.sh
 
-# if [[ $CURRENT_BRANCH =~ $PROTECTED_BRANCH ]]; then
-#   echo >&2 "You can't commit directly to protected branch ($CURRENT_BRANCH)!"
-#   exit 1
-# fi
+if [[ $CURRENT_BRANCH =~ $PROTECTED_BRANCH ]]; then
+  echo "Commit to protected branch ($CURRENT_BRANCH), think before you type."
+  $(prompt-to-confirm)
+  status=$?
+  if [ $status -ne 0 ]; then
+    echo "Abort..."
+    exit $status
+  fi
+fi
 
 find-program clang-format
 find-program perl
